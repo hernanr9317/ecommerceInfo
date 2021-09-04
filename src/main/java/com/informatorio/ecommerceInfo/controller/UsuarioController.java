@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RestController
@@ -46,7 +45,7 @@ public class UsuarioController {
     }
 
     @GetMapping(value= "/usuario")
-    public ResponseEntity<?> buscarPorCiudad(
+    public ResponseEntity<?> buscarUsuario(
             @RequestParam(name = "fechaDeCreacion", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion,
             @RequestParam(name = "ciudad", required = false) String ciudad)
     {
@@ -57,6 +56,8 @@ public class UsuarioController {
         }
         return new ResponseEntity<>(usuarioRepository.findAll(), HttpStatus.OK);
     }
+
+
 
 }
 
