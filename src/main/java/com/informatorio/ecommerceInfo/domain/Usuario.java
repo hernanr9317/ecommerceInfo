@@ -47,6 +47,14 @@ public class Usuario {
     private List<Carrito> carritos = new ArrayList<>();
 
 
+    public void calcularTotalCarritos(){
+
+        List<Carrito> carritos = this.getCarritos();
+        for (Carrito carrito: carritos){
+            carrito.calcularTotal();
+        }
+    }
+
     public Long getId() {
         return id;
     }

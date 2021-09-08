@@ -34,8 +34,14 @@ public class CarritoController {
 
 
 
+
     @GetMapping(value= "/carrito")
     public ResponseEntity<?> listarCarritos() {
+
+        List<Carrito> carritos = carritoRepository.findAll();
+        for (Carrito carrito: carritos){
+           carrito.calcularTotal();
+        }
         return new ResponseEntity<>(carritoRepository.findAll(), HttpStatus.OK);
     }
 
@@ -44,6 +50,14 @@ public class CarritoController {
         Usuario usuario = usuarioRepository.findById(id).get();
         carrito.setUsuario(usuario);
        return carritoRepository.save(carrito);
+    }
+
+    @GetMapping(value = "/carrito/{id}")
+    public ResponseEntity<?> getCarritoPorId(@PathVariable("id") Long id){
+
+        Carrito carrito = carritoRepository.findById(id).get();
+        carrito.calcularTotal();
+        return new ResponseEntity<>(carritoRepository.findById(id), HttpStatus.OK);
     }
 
     @PutMapping("/usuario/{id}/carrito/{idCarrito}")

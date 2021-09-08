@@ -45,6 +45,14 @@ public class Carrito {
         lineaDeCarrito.setCarrito(null);
     }
 
+    public void calcularTotal(){
+        List <LineaDeCarrito> lineas = this.getLineasDeCarrito();
+        this.setTotal(BigDecimal.ZERO);
+        for (LineaDeCarrito linea: lineas){
+            this.setTotal(this.getTotal().add(linea.calcularSubtotal()));
+        }
+    }
+
     public Long getId() {
         return id;
     }

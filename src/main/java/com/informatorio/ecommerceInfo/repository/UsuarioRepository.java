@@ -1,5 +1,6 @@
 package com.informatorio.ecommerceInfo.repository;
 
+import com.informatorio.ecommerceInfo.domain.Carrito;
 import com.informatorio.ecommerceInfo.domain.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
 
     List<Usuario> findByCiudad(String ciudad);
 

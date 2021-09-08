@@ -1,6 +1,8 @@
 package com.informatorio.ecommerceInfo.controller;
 
+import com.informatorio.ecommerceInfo.domain.Carrito;
 import com.informatorio.ecommerceInfo.domain.Usuario;
+import com.informatorio.ecommerceInfo.repository.CarritoRepository;
 import com.informatorio.ecommerceInfo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -17,12 +20,18 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private CarritoRepository carritoRepository;
+
     @PostMapping(value = "/usuario")
     public Usuario createUsuario(@RequestBody Usuario usuario)
         {return usuarioRepository.save(usuario);}
 
     @GetMapping(value = "/usuario/{id}")
     public Usuario getUsuarioPorId(@PathVariable("id") Long id){
+
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.calcularTotalCarritos();
         return usuarioRepository.findById(id).get();
     }
 
@@ -49,6 +58,10 @@ public class UsuarioController {
             @RequestParam(name = "fechaDeCreacion", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion,
             @RequestParam(name = "ciudad", required = false) String ciudad)
     {
+        List <Usuario> usuarios = usuarioRepository.findAll();
+        for(Usuario usuario: usuarios){
+            usuario.calcularTotalCarritos();
+        }
         if (fechaDeCreacion != null) {
             return new ResponseEntity<>(usuarioRepository.findByFechaDeCreacionAfter(fechaDeCreacion.atStartOfDay()), HttpStatus.OK);
         } else if (Objects.nonNull(ciudad)) {
